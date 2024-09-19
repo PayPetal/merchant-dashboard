@@ -1,8 +1,12 @@
+import AuthScreen from "./Component /Auth/AuthScreen.jsx";
 
 function App() {
   return (
     <div className="App">
-       <h1>Merchant Dashboard</h1>
+      <AuthScreen />
+      <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
     </div>
   );
 }
