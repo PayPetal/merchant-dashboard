@@ -1,13 +1,16 @@
-import AuthScreen from "./Component /Auth/AuthScreen.jsx";
-
+import AuthScreen from "./Component/Auth/AuthScreen.jsx";
+import { Routes, Route, } from "react-router-dom";
+import Login from "./Component/Auth/Login.jsx";
 function App() {
   return (
     <div className="App">
       <AuthScreen />
-      <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+      <Routes>
+        <Route path="login" element={<Login />} />
+      </Routes>
     </div>
+
+
   );
 }
 
