@@ -57,9 +57,11 @@ export default function Login() {
 
             <label htmlFor="Password" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Password</label>
 
-
           </div>
+
+         
       </div>
+      <h4 className='flex items-start text-btn-color font-medium'>Forgot Your Password?</h4>
       <button className='rounded-full py-4  bg-btn-color text-white hover:bg-btn-hover'> Login</button>
     </form>
   )
