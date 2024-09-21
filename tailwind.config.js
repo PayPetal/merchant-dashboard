@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -24,13 +25,8 @@ module.exports = {
       'btn-color':'#0A086E'
 
       },
-      fontFamily:{
-        satoshi:['satoshi'],
-        //  font-weight: "regular",
-        //  text-transform: "uppercase",
-        //  font-size: 28pt,
-        //  line-height: "auto"
-
+      fontFamily: {
+        satoshi: ['Satoshi', 'sans-serif'],
       },
       fontSize:{
 

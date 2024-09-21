@@ -61,7 +61,7 @@ export default function Login() {
 
          
       </div>
-      <h4 className='flex items-start text-btn-color font-medium'>Forgot Your Password?</h4>
+      <Link className='flex items-start text-btn-color font-medium'>Forgot Your Password?</Link>
       <button className='rounded-full py-4  bg-btn-color text-white hover:bg-btn-hover'> Login</button>
     </form>
   )
