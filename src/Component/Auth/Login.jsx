@@ -1,9 +1,8 @@
 
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { FaCheck, FaRegEyeSlash } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
-import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 
 
