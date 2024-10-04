@@ -32,14 +32,14 @@ export default function Signup() {
 
 
   const [passwordProgress, setPasswordProgress] = useState(0)
-
+  const [color , setColor] = useState(' progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-green-400  overflow-hidden')
 
   // function debounce(func, delay) {
   //   let timeoutId;
-  
+
   //   return function(...args) {
   //     clearTimeout(timeoutId);
-  
+
   //     timeoutId = setTimeout(() => {
   //       func.apply(this, args);
   //     }, delay);
@@ -49,25 +49,75 @@ export default function Signup() {
   //change the function to reduce space and stop it from updating state when the user is typing 
   const handleChange = (e) => {
     const { name, value } = e.target
-      setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-       // Debounce the state update to prevent unnecessary re-renders
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+    // Debounce the state update to prevent unnecessary re-renders
     // debounce(() => {
     //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
     // }, 100);
 
     const selectedCountry = document.getElementById('country').value.toLowerCase();
     // console.log(selectedCountry)
-    setCountryCode(countryCodes[selectedCountry] || 'not seen'); // Set code or empty string
+    setCountryCode(countryCodes[selectedCountry] || '+'); // Set code or empty string
 
-    if(formData.password.length >= 8){
-      console.log("password is greater than or equal 8")
-      setPasswordProgress(100)
-    }else if (formData.password.length > 0 || formData.password.length <= 4){
-      console.log("password is greater than 4 and 0")
-      setPasswordProgress(50)
-    }
+    passwordValidation(formData.password)
 
   }
+
+  const passwordValidation = (password) => {
+
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d+/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?':{}|<>]/.test(password);
+    console.log(hasLowerCase, hasUpperCase, hasNumber, hasSpecialChar)
+
+    const passedChecks = [
+      hasLowerCase,
+      hasUpperCase,
+      hasNumber,
+      hasSpecialChar,
+    ].filter(Boolean).length;
+
+
+    // const element = 
+    // document.querySelector('[::-webkit-progress-value]:bg-green-400s')
+    // document.getElementsByClassName('[::-webkit-progress-value]:bg-green-400s')
+    if (password.length >= 8) {
+      if (passedChecks === 4 ) {
+        setPasswordProgress(100)
+        setPasswordStatus("very strong")
+        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-green-400  overflow-hidden")
+      } else if (passedChecks === 3) {
+        setPasswordProgress(75)
+        setPasswordStatus("Strong")
+        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-blue-400  overflow-hidden")
+      } else if (passedChecks === 2) {
+        setPasswordProgress(50)
+        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
+        setPasswordStatus("medium")
+      } 
+    }else{
+      setPasswordProgress(25)
+        setPasswordStatus("low")
+        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-red-400  overflow-hidden")
+        // element.classList.replace('[&::-webkit-progress-value]:bg-red-400')
+    }
+    
+
+    console.log(passedChecks)
+
+    // if (password.length >= 8) {
+    //   console.log("password is greater than or equal 8")
+
+    // } else if (password.length > 0 || password.length <= 4) {
+    //   console.log("password is greater than 4 and 0")
+    //   setPasswordProgress(50)
+    // }
+  }
+
+  // console.log(hasLowerCase, hasUpperCase, hasNumber, hasSpecialChar)
+
+
   const countryCodes = {
     ng: '+234',
     unitedstates: '+1',
@@ -101,8 +151,8 @@ export default function Signup() {
       console.log("password dont match")
       return;
     } else if (formData.password === formData.confirmPassword) {
-        setPasswordStatus("password match")
-      }
+      setPasswordStatus("password match")
+    }
 
     try {
 
@@ -156,7 +206,7 @@ export default function Signup() {
         </div>
 
         :
-        <form action="POST" onSubmit={handleSubmit} className='flex flex-col xl:w-6/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4  p-6 rounded-3xl my-20 text-center bg-white  dark:bg-gray-900 dark:text-white '>
+        <form action="POST" onSubmit={handleSubmit} className='flex flex-col xl:w-6/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4  p-6 rounded-3xl my-auto text-center bg-white  dark:bg-gray-900 dark:text-white '>
           <div className='flex flex-col  items-center gap-4'>
             <div className='flex flex-col'>
               <h4 className='xl:text-2xl lg:text-1xl md:text-xl sm:text-lg  text-sm font-medium'>Sign Up to Accept Payments From Your Customers</h4>
@@ -181,12 +231,12 @@ export default function Signup() {
                   id="firstName"
                   name="firstName"
                   autoComplete="on"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Firstname" />
-                <label htmlFor="firstName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Firstname</label>
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Firstname" />
+                <label htmlFor="firstName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Firstname</label>
               </div>
             </div>
 
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900  rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <input
                   type="text"
@@ -194,11 +244,11 @@ export default function Signup() {
                   id="middleName"
                   name="middleName"
                   autoComplete="on"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Middlename" />
-                <label htmlFor="middleName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Middlename</label>
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Middlename" />
+                <label htmlFor="middleName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Middlename</label>
               </div>
             </div>
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900  rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <input
                   type="text"
@@ -206,11 +256,11 @@ export default function Signup() {
                   id="lastName"
                   name="lastName"
                   autoComplete="on"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Lastname" />
-                <label htmlFor="lastName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Lastname</label>
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Lastname" />
+                <label htmlFor="lastName" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Lastname</label>
               </div>
             </div>
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900  rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <input
                   type="email"
@@ -218,18 +268,18 @@ export default function Signup() {
                   id="email"
                   name="email"
                   autoComplete='username'
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Email" />
-                <label htmlFor="email" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Email</label>
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Email" />
+                <label htmlFor="email" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Email</label>
               </div>
             </div>
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900  rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <select
 
                   onChange={handleChange}
                   id="country"
                   name="country"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none">
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none">
                   <option value="">Select a Country</option>
                   <option value="NG">Nigeria</option>
                   <option value="sourthafrica">Sourt Africa</option>
@@ -239,13 +289,13 @@ export default function Signup() {
 
                   <option value="Ghana">Ghana</option>
                 </select>
-                <label htmlFor="country" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Country</label>
+                <label htmlFor="country" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Country</label>
               </div>
             </div>
 
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900  rounded-lg">
               <div className="relative bg-inherit rounded-lg">
-                <div className='left-0 rounded-lg rounded-r-none px-2 absolute text-2xl bg-slate-50 py-3.5 sm:py-2 md:py-3.5 text-gray-400'>
+                <div className='left-0 rounded-lg rounded-r-none px-2 absolute text-2xl bg-slate-50 dark:bg-gray-600 py-3.5 sm:py-2 md:py-3.5 text-gray-400'>
                   <h4 className='text-sm md:text-md font-light'>{countryCode}</h4>
 
                 </div>
@@ -255,16 +305,16 @@ export default function Signup() {
                   id="phoneNumber"
                   name="phoneNumber"
                   autoComplete="on"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 pl-14 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 pl-14 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
 
-                <label htmlFor="phoneNumber" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1  peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-placeholder-shown:left-12 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm  ">Phone Number</label>
+                <label htmlFor="phoneNumber" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1  peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-placeholder-shown:left-12 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm  ">Phone Number</label>
 
 
               </div>
             </div>
 
 
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900 rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <div className='right-2 absolute text-2xl top-3 text-gray-400'>
                   {icon ?
@@ -279,17 +329,26 @@ export default function Signup() {
                   id="password"
                   name="password"
                   autoComplete="new-password"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
 
-                <label htmlFor="password" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Password</label>
+                <label htmlFor="password" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Password</label>
               </div>
 
-              <progress id="pass"  className="progress-custom" value={passwordProgress} max="100">{passwordProgress}%</progress>
-              {PasswordStatus && (
+              <div className='w-full text-left'>
+                <progress id="pass" className={color} value={passwordProgress} max="100">{passwordProgress}%</progress>
+                {/* <progress id="pass" className=" progress-bar " value={passwordProgress} max="100">{passwordProgress}%</progress> */}
+                <p
+                  id="strength-text"
+                  className="text-sm font-medium">
+                  Password strength: <span id="strength-label">{PasswordStatus}</span>
+                </p>
+              </div>
+
+              {/* {PasswordStatus && (
                 <h4 className="text-md py-2 text-left text-red-400">{PasswordStatus}</h4>
-              )}
+              )} */}
             </div>
-            <div className="bg-white  rounded-lg">
+            <div className="bg-white dark:bg-gray-900 rounded-lg">
               <div className="relative bg-inherit rounded-lg">
                 <div className='right-2 absolute text-2xl top-3 text-gray-400'>
                   {icon ?
@@ -304,12 +363,13 @@ export default function Signup() {
                   id="confirmPassword"
                   name="confirmPassword"
                   autoComplete="new-password"
-                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
+                  className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400   placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-gray-600 dark:focus:ring-gray-400 focus:ring-sky-600 focus:outline-none focus:border-none" placeholder="Password" />
 
-                <label htmlFor="confirmPassword" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Confirm Password</label>
+                <label htmlFor="confirmPassword" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white bg-inherit rounded-lg mx-1 px-1 py-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 dark:peer-focus:text-gray-300 peer-focus:text-sm transition-all">Confirm Password</label>
 
 
               </div>
+              
             </div>
 
 
@@ -317,10 +377,10 @@ export default function Signup() {
 
 
           </div>
-          <button 
-          className='rounded-full py-4 sm:w-8/12 md:w-4/12 bg-btn-color text-white hover:bg-btn-hover'
-          title="Submit form"
-           type='submit'> Sign Up</button>
+          <button
+            className='rounded-full py-4 sm:w-8/12 md:w-4/12 bg-btn-color text-white hover:bg-btn-hover'
+            title="Submit form"
+            type='submit'> Sign Up</button>
         </form>
 
       }

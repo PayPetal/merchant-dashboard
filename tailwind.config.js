@@ -9,6 +9,12 @@ module.exports = {
   theme: {
 
     extend: {
+      // backgroundImage:{
+      //   "bg-img": "url{assets/img/bg.png}",
+      // },
+      backgroundImage: {
+        "bg-img": "url('assets/img/bg.png')",
+      },
       screens: {
         sm: '480px',
         md: '768px',
@@ -38,13 +44,13 @@ module.exports = {
             rounded: 'lg',
           },
           '&::-webkit-progress-bar': {
-            backgroundColor: 'slate-300',
+            backgroundColor: 'slate-100',
           },
           '&::-webkit-progress-value': {
             backgroundColor: 'violet-400',
           },
           '&::-moz-progress-bar': {
-            backgroundColor: 'violet-400',
+            backgroundColor: 'green-400',
           },
         },
       },
