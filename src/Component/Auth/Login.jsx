@@ -11,14 +11,14 @@ import { IoIosArrowForward } from 'react-icons/io';
 
 export default function Login() {
   const [icon, setIcon] = useState(false);
-  const [type, setType] = useState('password');
+  const [type, setType] = useState("password");
   const handleToggle = () => {
-    if (type === 'password') {
+    if (type === "password") {
       setIcon(true);
-      setType('text')
+      setType("text");
     } else {
-      setIcon(false)
-      setType('password')
+      setIcon(false);
+      setType("password");
     }
   }
 
@@ -107,8 +107,10 @@ export default function Login() {
           </p>
           <Link to="/register" className='text-link-a  dark:text-purple-300 text-sm' >Sign Up here</Link >
         </div>
-
       </div>
+      
+      {/* how to import an svg */}
+      {/* <PTIconPos className="w-[28px]" /> */}
 
 
        
