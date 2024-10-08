@@ -8,8 +8,11 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      // backgroundImage:{
+      //   "bg-img": "url{assets/img/bg.png}",
+      // },
       backgroundImage: {
-        "bg-image": "url('assets/images/bg.png')",
+        "bg-img": "url('assets/images/bg.png')",
       },
       screens: {
         sm: "480px",
@@ -38,14 +41,14 @@ module.exports = {
           "&::-webkit-progress-value": {
             rounded: "lg",
           },
-          "&::-webkit-progress-bar": {
-            backgroundColor: "slate-300",
+          '&::-webkit-progress-bar': {
+            backgroundColor: 'slate-100',
           },
           "&::-webkit-progress-value": {
             backgroundColor: "violet-400",
           },
-          "&::-moz-progress-bar": {
-            backgroundColor: "violet-400",
+          '&::-moz-progress-bar': {
+            backgroundColor: 'green-400',
           },
         },
       },
