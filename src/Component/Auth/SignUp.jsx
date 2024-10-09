@@ -27,6 +27,8 @@ export default function Signup() {
 
   console.log(formData)
   const [PasswordStatus, setPasswordStatus] = useState("")
+  const [color_pass, setColor_pass] = useState("text-black")
+  const [bg_pass, setBg_pass] = useState("bg-gray-100")
 
   const [countryCode, setCountryCode] = useState('+'); // Initial value
 
@@ -82,24 +84,33 @@ export default function Signup() {
     // const element = 
     // document.querySelector('[::-webkit-progress-value]:bg-green-400s')
     // document.getElementsByClassName('[::-webkit-progress-value]:bg-green-400s')
+
     if (password.length >= 8) {
       if (passedChecks === 4 ) {
         setPasswordProgress(100)
+        setColor_pass("text-green-700")
+        setBg_pass('bg-green-700')
         setPasswordStatus("very strong")
         setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-green-400  overflow-hidden")
       } else if (passedChecks === 3) {
         setPasswordProgress(75)
+        setColor_pass("text-blue-700")
+        setBg_pass('bg-blue-700')
         setPasswordStatus("Strong")
         setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-blue-400  overflow-hidden")
       } else if (passedChecks === 2) {
         setPasswordProgress(50)
+        setColor_pass("text-yellow-500")
+        setBg_pass('bg-yellow-500')
         setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
         setPasswordStatus("medium")
       } 
     }else{
       setPasswordProgress(25)
-        setPasswordStatus("low")
-        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-red-400  overflow-hidden")
+        setPasswordStatus("Weak")
+        setColor_pass("text-red-700")
+        setBg_pass('bg-red-700')
+        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-red-700  overflow-hidden")
         // element.classList.replace('[&::-webkit-progress-value]:bg-red-400')
     }
     
@@ -336,12 +347,33 @@ export default function Signup() {
 
               <div className='w-full text-left'>
                 <progress id="pass" className={color} value={passwordProgress} max="100">{passwordProgress}%</progress>
+
+                  {/* <div className='flex flex-row gap-4 py-3'>
+                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
+                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
+                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
+                     <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
+                  </div> */}
                 {/* <progress id="pass" className=" progress-bar " value={passwordProgress} max="100">{passwordProgress}%</progress> */}
                 <p
                   id="strength-text"
-                  className="text-sm font-medium">
-                  Password strength: <span id="strength-label">{PasswordStatus}</span>
+                  className={`text-sm  font-medium ${color_pass} `}>
+                  Password strength: <span id='strength-label'>{PasswordStatus}</span>
                 </p>
+                {
+                  PasswordStatus === "Weak" ?
+                  <>
+                   <p
+                  className={`text-sm  font-medium ${color_pass} `}>
+                    Must contain at least one alphabet or number
+                </p>
+                <p
+                  className="text-sm text-red-700 font-medium">
+                   Must not be less than 8 characters
+                </p>
+                  </>
+                  :null
+                }
               </div>
 
               {/* {PasswordStatus && (
