@@ -227,7 +227,7 @@ export default function Signup() {
           <form
             action="POST"
             onSubmit={handleSubmit}
-            className="flex flex-col xl:w-6/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4  p-6 rounded-3xl my-20 text-center bg-white  dark:bg-gray-900 dark:text-white "
+            className="flex flex-col xl:w-6/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4  p-6 rounded-3xl my-0 md:my-20 text-center bg-white  dark:bg-gray-900 dark:text-white "
           >
             <div className="flex flex-col  items-center gap-4">
               <div className="flex flex-col">
