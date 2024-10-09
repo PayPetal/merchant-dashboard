@@ -1,11 +1,12 @@
 import Nav from "Component/Auth/Nav";
 import React from "react";
 
-export default function Authlayout({ children }) {
+//we are going to pass anything it wraps has a child prop 
+export default function Authlayout({children}) {
   return (
-    <div className="bg-bg-image h-screen  bg-no-repeat bg-cover bg-link-a  overflow-hidden">
+    <div className="bg-bg-img h-screen  bg-no-repeat bg-cover bg-link-a  overflow-hidden">
       <Nav />
       <div className="flex justify-center">{children}</div>
     </div>
-  );
+  )
 }
