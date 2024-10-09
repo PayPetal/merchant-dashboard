@@ -4,6 +4,7 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
 import { useState } from "react";
 import { PTIconPos } from "assets/icons";
+import Authlayout from "layout/authlayout";
 
 export default function Login() {
   const [icon, setIcon] = useState(false);
@@ -18,6 +19,7 @@ export default function Login() {
     }
   };
   return (
+    <Authlayout>
     <form
       action=""
       className="flex flex-col xl:w-4/12 lg:w-6/12 md:w-8/12 sm:w-10/12 w-10/12 gap-4 p-6  lg:p-10 rounded-3xl my-20 text-center bg-white "
@@ -94,5 +96,6 @@ export default function Login() {
         Login
       </button>
     </form>
+    </Authlayout>
   );
 }

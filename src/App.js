@@ -8,16 +8,11 @@ import Authlayout from "./layout/authlayout";
 function App() {
   return (
     <BrowserRouter>
-      <Authlayout>
-        <Nav />
-        <div className="justify-center flex flex-col items-center">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Signup />} />
-          </Routes>
-        </div>
-      </Authlayout>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Signup />} />
+      </Routes>
     </BrowserRouter>
   );
 }
