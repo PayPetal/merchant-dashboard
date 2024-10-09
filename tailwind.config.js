@@ -8,9 +8,6 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
-      // backgroundImage:{
-      //   "bg-img": "url{assets/img/bg.png}",
-      // },
       backgroundImage: {
         "bg-img": "url('assets/images/bg.png')",
       },
