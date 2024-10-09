@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { FaCheck, FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
 import { useState } from "react";
+import { PTIconPos } from "assets/icons";
+import Authlayout from "layout/authlayout";
 import axios from 'axios';
 import { IoIosArrowForward } from 'react-icons/io';
 
@@ -68,6 +70,7 @@ export default function Login() {
 
   }
   return (
+    <Authlayout>
     <>
     {success ?
       <div className='flex flex-col xl:w-5/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4 items-center  p-6 rounded-3xl my-40  bg-white dark:bg-gray-900 dark:text-white animate-fade-left'>
@@ -156,5 +159,6 @@ export default function Login() {
       <button className='rounded-full py-4  bg-btn-color text-white hover:bg-btn-hover'> Login</button>
     </form>}
     </>
+    </Authlayout>
   )
 }
