@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { FaCheck, FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
@@ -8,99 +8,104 @@ import { PTIconPos } from "assets/icons";
 import Authlayout from "layout/authlayout";
 import axios from 'axios';
 import { IoIosArrowForward } from 'react-icons/io';
-
+import SiteContextProvider, { SiteContext } from "Context/SiteContext.jsx";
 
 
 export default function Login() {
-  const [icon, setIcon] = useState(false);
-  const [type, setType] = useState("password");
-  const handleToggle = () => {
-    if (type === "password") {
-      setIcon(true);
-      setType("text");
-    } else {
-      setIcon(false);
-      setType("password");
-    }
-  }
+  // const [icon, setIcon] = useState(false);
+  // const [type, setType] = useState("password");
+  // const handleToggle = () => {
+  //   if (type === "password") {
+  //     setIcon(true);
+  //     setType("text");
+  //   } else {
+  //     setIcon(false);
+  //     setType("password");
+  //   }
+  // }
 
   // let base_url = window.location.origin;
   // console.log(base_url)
 
-  const [formData, setFormData] = useState(
-    {
-      // baseUrl: base_url,
-      email: "",
-      password: ""
-    }
-  )
+  // const [formData, setFormData] = useState(
+  //   {
+  //     // baseUrl: base_url,
+  //     email: "",
+  //     password: ""
+  //   }
+  // )
 
-  //data from the 
-  const [accessToken, setAccessToken] = useState("")
-  const [refreshToken, setrefreshToken] = useState("")
+  // //data from the 
+  // const [accessToken, setAccessToken] = useState("")
+  // const [refreshToken, setrefreshToken] = useState("")
 
-  //this shows if the user is logged in or not
-  const [statusCode, setStatusCode] = useState()
-  const [status, setStatus] = useState()
+  // //this shows if the user is logged in or not
+  // const [statusCode, setStatusCode] = useState()
+  // const [status, setStatus] = useState()
 
 
 
-  //this handles the changes of the formdata 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  }
+  // //this handles the changes of the formdata 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target
+  //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  // }
 
   //state to hold and determine the success
-  const [success, setsuccess] = useState(false)
+  // const [success, setsuccess] = useState(false)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const body = {
-      email: formData.email,
-      password: formData.password
-    }
-    console.log(body)
-    try {
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const body = {
+  //     email: formData.email,
+  //     password: formData.password
+  //   }
+  //   console.log(body)
+  //   try {
 
-      //create a variable for this 
-      const response = await axios.post("https://merchant.paypetalhq.xyz/merchant/auth/login",
-        body
-      )
-      if (response.status === 200 || response.data.statusCode === "00" || response.data.status === true ) {
-        setsuccess(true)
-        setStatusCode(response.data.statusCode)
-        setStatus(response.data.status)
-      } 
+  //     //create a variable for this 
+  //     const response = await axios.post("https://merchant.paypetalhq.xyz/merchant/auth/login",
+  //       body
+  //     )
+  //     if (response.status === 200 || response.data.statusCode === "00" || response.data.status === true ) {
+  //       setsuccess(true)
+  //       setStatusCode(response.data.statusCode)
+  //       setStatus(response.data.status)
+  //     } 
 
-      // switch (response.status) {
-      //   case 200:
-      //     if ( response.data.statusCode === "00" || response.data.status === true ) {
-      //         setsuccess(true)
-      //         setStatusCode(response.data.statusCode)
-      //         setStatus(response.data.status)
-      //       } 
-      //     console.log("Login was successfull", response.data)
-      //     break;
-      //   default:
+  //     // switch (response.status) {
+  //     //   case 200:
+  //     //     if ( response.data.statusCode === "00" || response.data.status === true ) {
+  //     //         setsuccess(true)
+  //     //         setStatusCode(response.data.statusCode)
+  //     //         setStatus(response.data.status)
+  //     //       } 
+  //     //     console.log("Login was successfull", response.data)
+  //     //     break;
+  //     //   default:
           
-      //     console.log("Login was unsuccessfull",response.data)
-      //     break;
-      // }
+  //     //     console.log("Login was unsuccessfull",response.data)
+  //     //     break;
+  //     // }
 
 
-      console.log(response.status)
-      console.log('Login successful:', response.data, setrefreshToken(response.data.refreshToken), setAccessToken(response.data.accessToken), );
+  //     console.log(response.status)
+  //     console.log('Login successful:', response.data, setrefreshToken(response.data.refreshToken), setAccessToken(response.data.accessToken), );
 
-    } catch (error) {
-      console.error('Login error:', error);
-    }
+  //   } catch (error) {
+  //     console.error('Login error:', error);
+  //   }
 
-  }
+  // }
+
+  const {handleLogin, handleChange, loginStatus, handlePasswordToggle, PasswordIconType,PasswordIcon} = useContext(SiteContext)
+
+  
+
   return (
     <Authlayout>
     <>
-      {success ?
+      {loginStatus ?
         <div className='flex flex-col xl:w-5/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4 items-center  p-6 rounded-3xl my-40  bg-white dark:bg-gray-900 dark:text-white animate-fade-left'>
           <div className='rounded-full border dark:border-none p-6 bg-checkbox-bg dark:bg-green-600 '>
             <FaCheck color='text-check' />
@@ -126,7 +131,7 @@ export default function Login() {
         </div>
 
         :
-        <form action="POST" className='flex flex-col xl:w-4/12 lg:w-6/12 md:w-8/12 sm:w-10/12 w-10/12 gap-4 p-6  lg:p-10 rounded-3xl my-20 text-center bg-white dark:bg-gray-900 dark:text-white ' onSubmit={handleSubmit}>
+        <form action="POST" className='flex flex-col xl:w-4/12 lg:w-6/12 md:w-8/12 sm:w-10/12 w-10/12 gap-4 p-6  lg:p-10 rounded-3xl my-20 text-center bg-white dark:bg-gray-900 dark:text-white ' onSubmit={handleLogin}>
           <div className='flex flex-col  items-center gap-4'>
             <div className='flex flex-col lg:px-4'>
               <h4 className='xl:text-2xl lg:text-1xl md:text-xl sm:text-lg  text-sm font-medium'>Login to Manage your Transactions</h4>
@@ -161,14 +166,14 @@ export default function Login() {
           <div className="bg-white dark:bg-gray-900 rounded-lg">
             <div className="relative bg-inherit rounded-lg">
               <div className='right-2 absolute text-2xl top-3 text-gray-400'>
-                {icon ?
-                  <FaRegEye onClick={handleToggle} />
+                {PasswordIcon ?
+                  <FaRegEye onClick={handlePasswordToggle} />
                   :
-                  <FaRegEyeSlash onClick={handleToggle} />
+                  <FaRegEyeSlash onClick={handlePasswordToggle} />
                 }
               </div>
               <input
-                type={type}
+                type={PasswordIconType}
                 onChange={handleChange}
                 id="password"
                 name="password"

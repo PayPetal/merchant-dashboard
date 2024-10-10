@@ -74,5 +74,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 npm install react-router-dom
 
 # for icons im using react icons
-
 npm install react-icons --save
+
+## react query 
+npm i @tanstack/react-query 

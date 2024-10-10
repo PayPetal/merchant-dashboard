@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaCheck, FaRegEyeSlash } from "react-icons/fa6";
 import { FaRegEye } from "react-icons/fa6";
@@ -6,34 +6,35 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
 import axios from "axios";
 import Authlayout from "layout/authlayout";
+import { SiteContext } from "Context/SiteContext";
 
 export default function Signup() {
-  let base_url = window.location.origin;
-  // console.log(base_url)
+  // let base_url = window.location.origin;
+  // // console.log(base_url)
 
-  const [formData, setFormData] = useState({
-    baseUrl: base_url,
-    firstName: "",
-    lastName: "",
-    middleName: "",
-    email: "",
-    phoneNumber: "",
-    country: "",
-    confirmPassword: "",
-    password: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   baseUrl: base_url,
+  //   firstName: "",
+  //   lastName: "",
+  //   middleName: "",
+  //   email: "",
+  //   phoneNumber: "",
+  //   country: "",
+  //   confirmPassword: "",
+  //   password: "",
+  // });
 
-  console.log(formData)
-  const [PasswordStatus, setPasswordStatus] = useState("")
-  const [color_pass, setColor_pass] = useState("text-black")
-  const [bg_pass, setBg_pass] = useState("bg-gray-100")
-  const [color, setColor] = useState("progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
-  console.log(formData);
+  // console.log(formData)
+  // const [PasswordStatus, setPasswordStatus] = useState("")
+  // const [color_pass, setColor_pass] = useState("text-black")
+  // const [bg_pass, setBg_pass] = useState("bg-gray-100")
+  // const [color, setColor] = useState("progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
+  // console.log(formData);
 
 
-  const [countryCode, setCountryCode] = useState("+"); // Initial value
+  // const [countryCode, setCountryCode] = useState("+"); // Initial value
 
-  const [passwordProgress, setPasswordProgress] = useState(0);
+  // const [passwordProgress, setPasswordProgress] = useState(0);
 
   // function debounce(func, delay) {
   //   let timeoutId;
@@ -48,136 +49,140 @@ export default function Signup() {
   // }
 
   //change the function to reduce space and stop it from updating state when the user is typing
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-    // Debounce the state update to prevent unnecessary re-renders
-    // debounce(() => {
-    //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-    // }, 100);
+  // const handleSignupChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  //   // Debounce the state update to prevent unnecessary re-renders
+  //   // debounce(() => {
+  //   //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  //   // }, 100);
 
-    const selectedCountry = document
-      .getElementById("country")
-      .value.toLowerCase();
-    // console.log(selectedCountry)
-    setCountryCode(countryCodes[selectedCountry] || "not seen"); // Set code or empty string
+  //   const selectedCountry = document
+  //     .getElementById("country")
+  //     .value.toLowerCase();
+  //   // console.log(selectedCountry)
+  //   setCountryCode(countryCodes[selectedCountry] || "not seen"); // Set code or empty string
 
-    passwordValidation(formData.password)
+  //   passwordValidation(formData.password)
 
-  }
+  // }
 
-  const passwordValidation = (password) => {
+  // const passwordValidation = (password) => {
 
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasNumber = /\d+/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?':{}|<>]/.test(password);
-    console.log(hasLowerCase, hasUpperCase, hasNumber, hasSpecialChar)
+  //   const hasLowerCase = /[a-z]/.test(password);
+  //   const hasUpperCase = /[A-Z]/.test(password);
+  //   const hasNumber = /\d+/.test(password);
+  //   const hasSpecialChar = /[!@#$%^&*(),.?':{}|<>]/.test(password);
+  //   console.log(hasLowerCase, hasUpperCase, hasNumber, hasSpecialChar)
 
-    const passedChecks = [
-      hasLowerCase,
-      hasUpperCase,
-      hasNumber,
-      hasSpecialChar,
-    ].filter(Boolean).length;
-    // const element = 
-    // document.querySelector('[::-webkit-progress-value]:bg-green-400s')
-    // document.getElementsByClassName('[::-webkit-progress-value]:bg-green-400s')
+  //   const passedChecks = [
+  //     hasLowerCase,
+  //     hasUpperCase,
+  //     hasNumber,
+  //     hasSpecialChar,
+  //   ].filter(Boolean).length;
+  //   // const element = 
+  //   // document.querySelector('[::-webkit-progress-value]:bg-green-400s')
+  //   // document.getElementsByClassName('[::-webkit-progress-value]:bg-green-400s')
 
-    if (password.length >= 8) {
-      if (passedChecks === 4 ) {
-        setPasswordProgress(100)
-        setColor_pass("text-green-700")
-        setBg_pass('bg-green-700')
-        setPasswordStatus("very strong")
-        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-green-400  overflow-hidden")
-      } else if (passedChecks === 3) {
-        setPasswordProgress(75)
-        setColor_pass("text-blue-700")
-        setBg_pass('bg-blue-700')
-        setPasswordStatus("Strong")
-        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-blue-400  overflow-hidden")
-      } else if (passedChecks === 2) {
-        setPasswordProgress(50)
-        setColor_pass("text-yellow-500")
-        setBg_pass('bg-yellow-500')
-        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
-        setPasswordStatus("medium")
-      } 
-    }else{
-      setPasswordProgress(25)
-        setPasswordStatus("Weak")
-        setColor_pass("text-red-700")
-        setBg_pass('bg-red-700')
-        setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-red-700  overflow-hidden")
-        // element.classList.replace('[&::-webkit-progress-value]:bg-red-400')
-    if (formData.password.length >= 8) {
-      console.log("password is greater than or equal 8");
-      setPasswordProgress(100);
-    } else if (formData.password.length > 0 || formData.password.length <= 4) {
-      console.log("password is greater than 4 and 0");
-      setPasswordProgress(50);
-    }
-    };}
-  const countryCodes = {
-    ng: "+234",
-    unitedstates: "+1",
-    unitedkingdom: "+44",
-    kenya: "+254",
-    ghana: "+233",
-    sourthafrica: "+27",
-    // Add more country codes here
-  };
+  //   if (password.length >= 8) {
+  //     if (passedChecks === 4 ) {
+  //       setPasswordProgress(100)
+  //       setColor_pass("text-green-700")
+  //       setBg_pass('bg-green-700')
+  //       setPasswordStatus("very strong")
+  //       setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-green-400  overflow-hidden")
+  //     } else if (passedChecks === 3) {
+  //       setPasswordProgress(75)
+  //       setColor_pass("text-blue-700")
+  //       setBg_pass('bg-blue-700')
+  //       setPasswordStatus("Strong")
+  //       setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-blue-400  overflow-hidden")
+  //     } else if (passedChecks === 2) {
+  //       setPasswordProgress(50)
+  //       setColor_pass("text-yellow-500")
+  //       setBg_pass('bg-yellow-500')
+  //       setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-yellow-400  overflow-hidden")
+  //       setPasswordStatus("medium")
+  //     } 
+  //   }else{
+  //     setPasswordProgress(25)
+  //       setPasswordStatus("Weak")
+  //       setColor_pass("text-red-700")
+  //       setBg_pass('bg-red-700')
+  //       setColor(" progress-custom  w-full h-2 transition-all duration-300 ease-out  [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:rounded-lg [&::-webkit-progress-bar]:bg-slate-200 [&::-webkit-progress-value]:bg-red-700  overflow-hidden")
+  //       // element.classList.replace('[&::-webkit-progress-value]:bg-red-400')
+  //   if (formData.password.length >= 8) {
+  //     console.log("password is greater than or equal 8");
+  //     setPasswordProgress(100);
+  //   } else if (formData.password.length > 0 || formData.password.length <= 4) {
+  //     console.log("password is greater than 4 and 0");
+  //     setPasswordProgress(50);
+  //   }
+  //   };}
+  // const countryCodes = {
+  //   ng: "+234",
+  //   unitedstates: "+1",
+  //   unitedkingdom: "+44",
+  //   kenya: "+254",
+  //   ghana: "+233",
+  //   sourthafrica: "+27",
+  //   // Add more country codes here
+  // };
 
-  const [icon, setIcon] = useState(false);
-  const [type, setType] = useState("password");
-  const handleToggle = () => {
-    if (type === "password") {
-      setIcon(true);
-      setType("text");
-    } else {
-      setIcon(false);
-      setType("password");
-    }
-  };
+  // const [icon, setIcon] = useState(false);
+  // const [type, setType] = useState("password");
+  // const handleToggle = () => {
+  //   if (type === "password") {
+  //     setIcon(true);
+  //     setType("text");
+  //   } else {
+  //     setIcon(false);
+  //     setType("password");
+  //   }
+  // };
 
-  const [success, setsuccess] = useState(false);
+  // const [success, setsuccess] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setPasswordStatus("Passwords do not match.");
-      console.log("password dont match");
-      return;
-    } else if (formData.password === formData.confirmPassword) {
-      setPasswordStatus("password match");
-    }
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setPasswordStatus("Passwords do not match.");
+  //     console.log("password dont match");
+  //     return;
+  //   } else if (formData.password === formData.confirmPassword) {
+  //     setPasswordStatus("password match");
+  //   }
 
-    try {
-      //create a variable for this
-      const response = await axios.post(
-        "https://merchant.paypetalhq.xyz/merchant/auth/register",
-        {
-          baseUrl: base_url,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          middleName: formData.middleName,
-          email: formData.email,
-          phoneNumber: formData.phoneNumber,
-          country: formData.country,
-          confirmPassword: formData.confirmPassword,
-          password: formData.password,
-        }
-      );
-      console.log("Registration successful:", response.data, setsuccess(true));
-    } catch (error) {
-      console.error("Registration error:", error);
-    }
-  };
+  //   try {
+  //     //create a variable for this
+  //     const response = await axios.post(
+  //       "https://merchant.paypetalhq.xyz/merchant/auth/register",
+  //       {
+  //         baseUrl: base_url,
+  //         firstName: formData.firstName,
+  //         lastName: formData.lastName,
+  //         middleName: formData.middleName,
+  //         email: formData.email,
+  //         phoneNumber: formData.phoneNumber,
+  //         country: formData.country,
+  //         confirmPassword: formData.confirmPassword,
+  //         password: formData.password,
+  //       }
+  //     );
+  //     console.log("Registration successful:", response.data, setsuccess(true));
+  //   } catch (error) {
+  //     console.error("Registration error:", error);
+  //   }
+  // };
+
+
+  const {handlePasswordToggle, passwordIcon, PasswordIconType,handleSignup, handleSignupChange,passwordProgress,PasswordStatus,countryCode,registerStatus,color,color_pass}= useContext(SiteContext)
+
   return (
     <Authlayout>
       <>
-        {success ? (
+        {registerStatus ? (
           <div className="flex flex-col xl:w-5/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4 items-center  p-6 rounded-3xl my-40  bg-white dark:bg-gray-900 dark:text-white animate-fade-left">
             <div className="rounded-full border dark:border-none p-6 bg-checkbox-bg dark:bg-green-600 ">
               <FaCheck color="text-check" />
@@ -226,7 +231,7 @@ export default function Signup() {
         ) : (
           <form
             action="POST"
-            onSubmit={handleSubmit}
+            onSubmit={handleSignup}
             className="flex flex-col xl:w-6/12 lg:w-8/12 md:w-10/12 sm:w-10/12 w-10/12 gap-4  p-6 rounded-3xl my-5 md:my-20 text-center bg-white  dark:bg-gray-900 dark:text-white "
           >
             <div className="flex flex-col  items-center gap-4">
@@ -255,7 +260,7 @@ export default function Signup() {
                 <div className="relative w-full bg-inherit rounded-lg">
                   <input
                     type="text"
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="firstName"
                     name="firstName"
                     autoComplete="on"
@@ -275,7 +280,7 @@ export default function Signup() {
                 <div className="relative bg-inherit rounded-lg">
                   <input
                     type="text"
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="middleName"
                     name="middleName"
                     autoComplete="on"
@@ -294,7 +299,7 @@ export default function Signup() {
                 <div className="relative bg-inherit rounded-lg">
                   <input
                     type="text"
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="lastName"
                     name="lastName"
                     autoComplete="on"
@@ -313,7 +318,7 @@ export default function Signup() {
                 <div className="relative bg-inherit rounded-lg">
                   <input
                     type="email"
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="email"
                     name="email"
                     autoComplete="username"
@@ -331,7 +336,7 @@ export default function Signup() {
               <div className="bg-white  rounded-lg">
                 <div className="relative bg-inherit rounded-lg">
                   <select
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="country"
                     name="country"
                     className="peer bg-transparent h-12 w-full rounded-lg text-gray-700 dark:text-white placeholder-transparent ring-2 px-2 ring-gray-200 dark:ring-white focus:ring-sky-600 focus:outline-none focus:border-none"
@@ -363,7 +368,7 @@ export default function Signup() {
                   </div>
                   <input
                     type="text"
-                    onChange={handleChange}
+                    onChange={handleSignupChange}
                     id="phoneNumber"
                     name="phoneNumber"
                     autoComplete="on"
@@ -383,15 +388,15 @@ export default function Signup() {
               <div className="bg-white  rounded-lg">
                 <div className="relative bg-inherit rounded-lg">
                   <div className="right-2 absolute text-2xl top-3 text-gray-400">
-                    {icon ? (
-                      <FaRegEye onClick={handleToggle} />
+                    {passwordIcon ? (
+                      <FaRegEye onClick={handlePasswordToggle} />
                     ) : (
-                      <FaRegEyeSlash onClick={handleToggle} />
+                      <FaRegEyeSlash onClick={handlePasswordToggle} />
                     )}
                   </div>
                   <input
-                    type={type}
-                    onChange={handleChange}
+                    type={PasswordIconType}
+                    onChange={handleSignupChange}
                     id="password"
                     name="password"
                     autoComplete="new-password"
@@ -411,10 +416,10 @@ export default function Signup() {
                 <progress id="pass" className={color} value={passwordProgress} max="100">{passwordProgress}%</progress>
 
                   {/* <div className='flex flex-row gap-4 py-3'>
-                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
-                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
-                    <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
-                     <span className={`p-1 bg-gray-100 ${bg_pass} rounded-full  w-4/12`}></span>
+                    <span className={`p-1 bg-gray-100 $} rounded-full  w-4/12`}></span>
+                    <span className={`p-1 bg-gray-100 $} rounded-full  w-4/12`}></span>
+                    <span className={`p-1 bg-gray-100 $} rounded-full  w-4/12`}></span>
+                     <span className={`p-1 bg-gray-100 $} rounded-full  w-4/12`}></span>
                   </div> */}
                 {/* <progress id="pass" className=" progress-bar " value={passwordProgress} max="100">{passwordProgress}%</progress> */}
                 <p
@@ -442,15 +447,15 @@ export default function Signup() {
               <div className="bg-white  rounded-lg">
                 <div className="relative bg-inherit rounded-lg">
                   <div className="right-2 absolute text-2xl top-3 text-gray-400">
-                    {icon ? (
-                      <FaRegEye onClick={handleToggle} />
+                    {passwordIcon ? (
+                      <FaRegEye onClick={handlePasswordToggle} />
                     ) : (
-                      <FaRegEyeSlash onClick={handleToggle} />
+                      <FaRegEyeSlash onClick={handlePasswordToggle} />
                     )}
                   </div>
                   <input
-                    type={type}
-                    onChange={handleChange}
+                    type={PasswordIconType}
+                    onChange={handleSignupChange}
                     id="confirmPassword"
                     name="confirmPassword"
                     autoComplete="new-password"
