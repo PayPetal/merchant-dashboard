@@ -7,6 +7,7 @@ import { IoCloudUpload } from "react-icons/io5";
 import upload from "../../../assets/images/form-icons.png";
 
 const ReqPOSTerminal = ({ show, onClose }) => {
+  const [acctNumber, setAcctNumber] = useState(null);
   const [activeTab, setActiveTab] = useState("merchantContact");
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState({
@@ -203,6 +204,10 @@ const ReqPOSTerminal = ({ show, onClose }) => {
                   <input
                     type="text"
                     id="accountNumber"
+                    value={acctNumber}
+                    onChange={(e) => {
+                      setAcctNumber(e.target.value);
+                    }}
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-indigo-200"
                     placeholder="Enter account number"
                     maxLength={10}
